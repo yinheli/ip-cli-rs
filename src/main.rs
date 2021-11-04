@@ -15,7 +15,9 @@ fn main() {
         .join("ipipfree.ipdb");
 
     if !file.exists() {
-        file = std::env::current_dir().unwrap().join("tmp/ipipfree.ipdb");
+        file = std::env::current_dir()
+            .unwrap()
+            .join("assets/ipipfree.ipdb");
     }
 
     let ipdb: Reader = Reader::open_file(file).unwrap();
