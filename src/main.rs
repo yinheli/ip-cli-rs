@@ -5,6 +5,7 @@ use ipdb::Reader;
 fn main() {
     let matches = App::new("ip-cli")
         .about("simple ip find tool, use ipip free db")
+        .version("v0.0.1")
         .arg(Arg::from_usage("<arg>... 'IP address'").required(true))
         .get_matches();
 
