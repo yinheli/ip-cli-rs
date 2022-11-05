@@ -78,16 +78,12 @@ jobs:
       - name: Post Build | Prepare artifacts [Windows]
         if: matrix.os == 'windows-latest'
         run: |
-          xcopy "README.md" "target/${{ matrix.target }}/release" /S /E /Y
-          xcopy "assets" "target/${{ matrix.target }}/release" /S /E /Y
           cd target/${{ matrix.target }}/release
-          dir 
           7z a ../../../${{ matrix.name }} ip-cli.exe assets README.md
           cd -
       - name: Post Build | Prepare artifacts [-nix]
         if: matrix.os != 'windows-latest'
         run: |
-          cp -r assets README.md target/${{ matrix.target }}/release
           cd target/${{ matrix.target }}/release
           tar czvf ../../../${{ matrix.name }} ip-cli assets README.md
           cd -
