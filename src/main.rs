@@ -1,12 +1,19 @@
-use clap::{App, Arg};
+use clap::{Arg, ArgAction, Command};
 use cli_table::{print_stdout, Style, Table, WithTitle};
 use ipdb::Reader;
 
 fn main() {
-    let matches = App::new("ip-cli")
+    let arg = Arg::default()
+        .id("arg")
+        .required(true)
+        .action(ArgAction::Set)
+        .allow_hyphen_values(true)
+        .help("IP Address");
+
+    let matches = Command::new("ip-cli")
         .about("simple ip find tool, use ipip free db")
         .version("v0.0.1")
-        .arg(Arg::from_usage("<arg>... 'IP address'").required(true))
+        .arg(arg)
         .get_matches();
 
     let mut file = std::env::current_exe()
@@ -23,17 +30,18 @@ fn main() {
 
     let ipdb: Reader = Reader::open_file(file).unwrap();
 
-    let ips = matches.values_of_lossy("arg").unwrap();
+    let ips = matches.get_many("arg").unwrap().collect::<Vec<&String>>();
+
     let mut items: Vec<IpAddr> = Vec::with_capacity(ips.len() as usize);
     for ip in ips {
-        let r = ipdb.find(&ip, "CN");
+        let r = ipdb.find(ip, "CN");
         if let Ok(r) = r {
             let address = r
                 .into_iter()
                 .map(|x| x.to_string())
                 .collect::<Vec<String>>();
             let item = IpAddr {
-                ip,
+                ip: ip.to_owned(),
                 address: Address(address),
             };
             items.push(item);
@@ -56,14 +64,14 @@ impl std::fmt::Display for Address {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut s = String::new();
         for i in self.0.iter() {
-            if i.len() == 0 {
+            if i.is_empty() {
                 continue;
             }
             s.push_str(i);
             s.push_str(", ");
         }
-        if s.len() > 0 {
-            s = (&s[..s.len() - 2]).to_string();
+        if !s.is_empty() {
+            s = (s[..s.len() - 2]).to_string();
         }
         write!(f, "{}", s)
     }
