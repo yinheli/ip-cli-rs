@@ -1,7 +1,13 @@
 [package]
 name = "ip-cli"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
+authors = ["yinheli <me@yinheli.com>"]
+license = "MIT"
+repository = "https://github.com/yinheli/ip-cli-rs"
+homepage = "https://github.com/yinheli/ip-cli-rs"
+readme = "README.md"
+description = "ip-cli for query ip location info"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
