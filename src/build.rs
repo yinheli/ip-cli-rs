@@ -1,9 +1,11 @@
-use copy_to_output::copy_to_output;
-use std::env;
+use fs_extra::{copy_items, dir::CopyOptions};
+use std::{env, path::Path};
 
 fn main() {
     println!("cargo:rerun-if-changed=assets/*");
-    let build_type = &env::var("PROFILE").unwrap();
-    copy_to_output("assets", build_type).expect("Could not copy");
-    copy_to_output("README.md", build_type).expect("Could not copy");
+    let out_dir = env::var("OUT_DIR").unwrap();
+    let target = Path::new(&out_dir).join(Path::new("../../../"));
+    let target = target.to_str().unwrap();
+    // println!("cargo:warning=target: {target:?}");
+    copy_items(&["assets", "README.md"], target, &CopyOptions::default()).expect("copy failed");
 }
