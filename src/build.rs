@@ -7,5 +7,7 @@ fn main() {
     let target = Path::new(&out_dir).join(Path::new("../../../"));
     let target = target.to_str().unwrap();
     // println!("cargo:warning=target: {target:?}");
-    copy_items(&["assets", "README.md"], target, &CopyOptions::default()).expect("copy failed");
+    let mut options = CopyOptions::default();
+    options.overwrite = true;
+    copy_items(&["assets", "README.md"], target, &options).expect("copy failed");
 }
