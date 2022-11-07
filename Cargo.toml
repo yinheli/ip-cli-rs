@@ -2,6 +2,7 @@
 name = "ip-cli"
 version = "0.1.5"
 edition = "2021"
+rust-version = "1.60"
 authors = ["yinheli <me@yinheli.com>"]
 license = "MIT"
 repository = "https://github.com/yinheli/ip-cli-rs"
